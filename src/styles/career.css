@@ -1,0 +1,6 @@
+/*? Estilos propios de la sección "Profesional" (src/cv/career.js).
+    El layout base (título + texto centrados) es .seccion / .seccion__titulo / .seccion__texto,
+    definido en style.css porque lo comparten las 4 secciones de CV.
+    Por ahora esta sección no tiene nada propio (usa el fondo normal de la página):
+    agrega acá cualquier estilo específico de "Profesional" cuando lo necesites,
+    con el patrón .seccion--career{ ... } para no chocar con las otras secciones. */

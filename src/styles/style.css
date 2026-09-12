@@ -8,7 +8,8 @@ html{
     scroll-behavior: smooth;
 }
 
-/*? Variables globales (design tokens): colores y fuentes que se reutilizan en todo el CSS */
+/*? Variables globales (design tokens): colores y fuentes que se reutilizan en todo el CSS
+    (este archivo, components.css y cada css de src/cv/) */
 :root{
     --color-primario: #aaccee; /* azul claro, se usa de fondo en el body */
     --color-secundario: #c6e881; /* verde claro, texto principal sobre el fondo azul */
@@ -17,6 +18,7 @@ html{
     --fuente-TimesNR: "Times New Roman MT Condensed", serif; /* fuente para títulos grandes */
     --color-hover: #01142b; /* azul muy oscuro, fondo al pasar el mouse sobre los links de redes */
     --color-text: #000; /* negro, definido pero no se está usando todavía */
+    --header-height: 100px; /* & valor de respaldo; main.js lo actualiza con el alto real del header ni bien carga */
 
 }
 
@@ -30,158 +32,13 @@ body{
     background-color: var(--color-primario); /* fondo azul claro de toda la página */
     color:var(--color-text); /* color de texto por defecto (verde claro) */
     box-sizing: border-box; /* & hace que padding/border se cuenten dentro del ancho/alto del elemento, no se sumen aparte */
+    padding-top: var(--header-height); /* & el header ahora es "fixed" (ver components.css); esto le abre el espacio que él dejó, para que no tape el hero */
 }
-
-/* ? Contenedor del header (barra superior con el menú) */
-.header{
-    padding: 2rem 5% 0; /* aire arriba y a los costados, parejo (antes solo tenía padding a la izquierda) */
-    display: flex;
-    justify-content: center; /* & centra todo el <nav> horizontalmente en vez de dejarlo pegado a la izquierda */
-}
-
-/* ? Layout general del <nav>: agrupa las píldoras de navegación + el selector de idioma */
-.header__menu{
-    display: flex;
-    align-items: center;
-    gap: 32px; /* separación entre el grupo de links y el grupo de idioma */
-    flex-wrap: wrap; /* & si no caben todas las píldoras en una fila (pantalla angosta), pasan a la siguiente línea */
-    justify-content: center;
-}
-
-/* ? Grupo de píldoras de navegación (Inicio, Sobre mi, Liderazgo, Profesional, Contacto) */
-.header__menu__links{
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-/* ? Cada link de navegación con forma de píldora/óvalo (borde + esquinas 100% redondeadas) */
-.header__menu__link{
-    font-family: var(--fuente-Helvica);
-    font-size: 1.05rem;
-    font-weight: 600; /* semi-bold */
-    color: var(--color-terciario); /* verde oscuro, para contrastar con el fondo azul */
-    text-decoration: none; /* quita el subrayado típico de los links */
-    text-align: center;
-    padding: 10px 26px; /* & el padding horizontal amplio es lo que le da la forma ovalada, no solo el border-radius */
-    border: 2px solid var(--color-terciario); /* borde que dibuja el contorno de la píldora */
-    border-radius: 999px; /* un valor bien alto = esquinas totalmente redondas, sin importar el tamaño del botón */
-    background-color: transparent;
-    transition: background-color .2s ease, color .2s ease; /* & transición suave al pasar de inactivo a activo */
-}
-
-/* ? Píldora de la página en la que estás parada ahora mismo (se marca a mano con esta clase en cada .html) */
-.header__menu__link.is-active{
-    background-color: var(--color-secundario); /* verde claro, tal cual pediste */
-    border-color: var(--color-secundario);
-    color: var(--color-terciario);
-}
-
-/* ? Grupo de botones de idioma (ES/EN), mismo estilo de píldora pero más chico */
-.header__menu__langs{
-    display: flex;
-    gap: 8px;
-}
-
-.header__menu__lang{
-    font-family: var(--fuente-Helvica);
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 999px;
-    border: 2px solid var(--color-terciario);
-    background-color: transparent;
-    color: var(--color-terciario);
-    cursor: pointer; /* deja claro que es clickeable (los <button> no siempre lo muestran) */
-}
-
-/* ? Botón del idioma actualmente activo (lo marca src/transaltion.js agregando/quitando esta clase) */
-.header__menu__lang.is-active{
-    background-color: var(--color-secundario);
-    border-color: var(--color-secundario);
-}
-
-/* ? Sección principal de presentación (hero): fotos a los lados + texto centrado en medio */
-.presentacion{
-    display: flex;
-    align-items: center; /* centra verticalmente las fotos y el texto (eje cruzado) */
-    justify-content: center; /* centra horizontalmente todo el contenido (eje principal) */
-    gap: 48px; /* & separación entre el cluster izquierdo, el texto y el cluster derecho */
-    padding: 5rem 5% 3rem;
-    flex-wrap: wrap; /* & si no cabe todo en una fila (pantalla angosta), el texto pasa a su propia línea */
-    scroll-margin-top: 20px; /* & pequeño respiro arriba cuando se llega acá por scroll-behavior:smooth (ver #app) */
-}
-
-/* ? Columna de texto dentro del hero (nombre, tagline) */
-.presentacion__contenido{
-    display: flex;
-    flex-direction: column; /*& apila título, texto uno debajo del otro */
-    align-items: center; /* & centra el h1/p horizontalmente dentro de la columna */
-    text-align: center; /* centra las líneas de texto dentro del título/párrafo (align-items solo centra la caja, no el texto adentro) */
-    gap: 24px;
-    max-width: 640px; /* & evita que el párrafo se estire de más en pantallas muy anchas */
-}
-
-/* ? Título grande con el nombre: "Daniela" y "Angulo" en su propia línea (2 <span> apilados) */
-.presentacion__contenido__titulo{
-    display: flex;
-    flex-direction: column; /* & pone cada <span> (Daniela / Angulo) en su propia línea */
-    align-items: center;
-    line-height: 1.05; /* & junta un poco las dos líneas para que se vean como un solo bloque de nombre */
-    font-size: 4rem;
-    font-family: var(--fuente-TimesNR); /* fuente destacada para el título principal */
-    color: var(--color-terciario);
-}
-
-/* ? El apellido ("Angulo"): cursiva + resaltado en verde, como un marcatextos detrás */
-.Titulo-destaque{
-    font-style: italic;
-    background-color: var(--color-secundario); /* resaltado verde claro, igual al de los links activos */
-    padding: 0 16px;
-    border-radius: 6px;
-}
-
-.presentacion__contenido__texto{
-    font-size: 1.25rem;
-    font-family: var(--fuente-Helvica);
-    color: var(--color-text);
-}
-
-/* ? Clusters de fotos decorativas a los lados del nombre (estilo moodboard/collage) */
-/* //& por ahora usan assets/Imagem.png de placeholder en las 4 posiciones: cámbialas por tus fotos cuando quieras */
-.presentacion__galeria{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex-shrink: 0; /* & no dejar que el cluster se achique para "robarle" espacio al texto central */
-}
-
-.presentacion__galeria--izquierda{
-    align-items: flex-start; /* fotos pegadas al lado de adentro del cluster izquierdo */
-}
-
-.presentacion__galeria--derecha{
-    align-items: flex-end; /* fotos pegadas al lado de adentro del cluster derecho, simétrico */
-}
-
-/* ? Estilo "polaroid" de cada foto: marco blanco grueso + sombra */
-.presentacion__galeria__foto{
-    width: 170px;
-    border: 8px solid #fff;
-    border-radius: 4px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra suave para que "floten" sobre el fondo */
-    background-color: #fff;
-}
-
-/* & pequeñas rotaciones alternadas para que se vea como un collage real, no una grilla perfecta */
-.presentacion__galeria__foto--1{ transform: rotate(-6deg); }
-.presentacion__galeria__foto--2{ width: 120px; margin-left: 50px; transform: rotate(4deg); }
-.presentacion__galeria__foto--3{ transform: rotate(6deg); }
 
 /* ? Estructura genérica de las secciones de CV (Sobre mi / Profesional / Liderazgo / Proyectos):
-   mismo layout de título + texto centrados. El contenido real se llena desde src/cv/*.js;
-   este bloque de CSS casi no debería cambiar aunque ese contenido se actualice seguido. */
+   mismo layout de título + texto centrados, compartido por src/cv/*.js.
+   Vive acá (no en un css por sección) justo porque es lo único que SÍ es común a las 4;
+   cada css de src/cv/ solo agrega lo que hace distinta a esa sección puntual (ej. el fondo). */
 .seccion{
     padding: 4rem 10%;
     display: flex;
@@ -189,7 +46,7 @@ body{
     align-items: center;
     text-align: center;
     gap: 20px;
-    scroll-margin-top: 20px; /* & mismo respiro que .presentacion, para el scroll suave del menú */
+    scroll-margin-top: var(--header-height); /* & que la sección no quede tapada bajo el header fijo al llegar por scroll */
 }
 
 .seccion__titulo{
@@ -203,80 +60,4 @@ body{
     font-size: 1.25rem;
     max-width: 700px; /* & que el párrafo no se estire de pared a pared en pantallas anchas */
     color: var(--color-text);
-}
-
-/* & alterna el fondo de "Sobre mi" y "Liderazgo" solo para separarlas visualmente
-   mientras no tienen un diseño propio (mismo truco que usan muchos portafolios de una sola página) */
-.seccion--aboutme,
-.seccion--leadership{
-    background-color: rgba(255, 255, 255, 0.35);
-}
-.presentacion__galeria__foto--4{ width: 120px; margin-right: 50px; transform: rotate(-4deg); }
-
-/* ? Bloque de "accede a mis redes" con el subtítulo y los links a Instagram/Github */
-.presentacion__enlaces{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column; /*& aunque diga justify-content: space-between, al ser columna esto separa verticalmente */
-    align-items: center; /* centra los links horizontalmente */
-    gap: 32px;
-}
-
-/* ? Estilo de cada link a red social (Instagram / Github), tipo botón con borde */
-.presentacion__enlaces__link{
-    width: 50%;
-    text-align: center;
-    padding: 21.5px 0;
-    border-radius: 8px; /* esquinas redondeadas tipo botón */
-    font-family: var(--fuente-Helvica);
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-decoration: none;
-    color: var(--color-secundario);
-    border: 2px solid var(--color-terciario); /* borde verde oscuro que define la forma de "botón" */
-    display: flex; /*& permite alinear el ícono (img) y el texto en la misma línea */
-    justify-content: center;
-    gap: 10px; /*  espacio entre el ícono y el texto del link */
-}
-
-.presentacion__enlaces__subtitulo{
-    font-family: var(--fuente-Helvica);
-    font-size: 1.5rem;
-    font-weight: 400; /*  normal, sin negrita */
-}
-
-/* ? Efecto hover: cambia el fondo del botón/link cuando el mouse pasa encima */
-.presentacion__enlaces__link:hover{
-    background-color: var(--color-hover); /*  azul muy oscuro */
-}
-
-.presentacion__imagen{
-    width: 50%; /*  ocupa la otra mitad del hero, junto a .presentacion__contenido */
-}
-
-/* ? Pie de página (footer) con el texto "Desarrollado por..." */
-footer{
-    background-color: var(--color-terciario); /*  fondo verde oscuro, contrasta con el resto de la página */
-    padding: 1.5rem;
-    color: var(--color-primario); /*  texto azul claro para que se lea sobre el fondo oscuro */
-    text-align: center;
-    font-family: var(--fuente-Helvica);
-    font-size: 1.5rem;
-    font-weight: 400;
-}
-
-/* ? Media query: ajustes de layout para pantallas más chicas (tablets/celulares, <=1200px) */
-@media (max-width: 1200px){
-    .header{
-        padding: 1.5rem 5%; /* más padding parejo en vez del asimétrico de escritorio */
-    }
-    .presentacion{
-        padding: 3rem 5%;
-    }
-    .presentacion__galeria{
-        display: none; /* & en pantallas chicas se ocultan las fotos decorativas para que el nombre/texto no queden apretados */
-    }
-    .presentacion__contenido{
-        width: auto; /* ya no se divide 50/50 con la imagen, ocupa el ancho que necesite */
-    }
 }

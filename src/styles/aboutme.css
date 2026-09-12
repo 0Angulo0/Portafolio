@@ -1,0 +1,10 @@
+/*? Estilos propios de la sección "Sobre mi" (src/cv/aboutme.js).
+    El layout base (título + texto centrados) es .seccion / .seccion__titulo / .seccion__texto,
+    definido en style.css porque lo comparten las 4 secciones de CV; acá solo va lo que
+    hace distinta a ESTA sección en particular. */
+
+/* & fondo levemente distinto al de la página, solo para separarla visualmente
+   del hero y de "Profesional" mientras no tiene un diseño propio */
+.seccion--aboutme{
+    background-color: rgba(255, 255, 255, 0.35);
+}

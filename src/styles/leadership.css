@@ -1,0 +1,9 @@
+/*? Estilos propios de la sección "Liderazgo" (src/cv/leadership.js).
+    El layout base (título + texto centrados) es .seccion / .seccion__titulo / .seccion__texto,
+    definido en style.css porque lo comparten las 4 secciones de CV; acá solo va lo que
+    hace distinta a ESTA sección en particular. */
+
+/* & mismo fondo que "Sobre mi", para alternar visualmente con "Profesional" y "Proyectos" */
+.seccion--leadership{
+    background-color: rgba(255, 255, 255, 0.35);
+}
