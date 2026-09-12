@@ -1,0 +1,20 @@
+<!-- //? Portafolio de una sola página. Este archivo es solo el "cascarón":
+     //? todo el contenido real (header, hero, secciones de CV, footer) vive en
+     //? src/main.js + src/components/*.js + src/cv/*.js y se inserta en #app en tiempo de carga. -->
+<!DOCTYPE html>
+<html lang="es-mx"> <!-- // idioma inicial antes de que transaltion.js lo actualice según lo guardado -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- // hace que el sitio sea responsive en celulares -->
+    <title>Daniela Angulo · Portafolio</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <div id="app"></div> <!-- //& main.js reemplaza esto por header + main + footer al cargar -->
+
+    <!-- //& el orden de los scripts importa: main.js arma el HTML primero (type="module" para poder
+         usar import/export), transaltion.js corre justo después y traduce lo que main.js insertó -->
+    <script type="module" src="./main.js"></script>
+    <script src="./transaltion.js" defer></script>
+</body>
+</html>
