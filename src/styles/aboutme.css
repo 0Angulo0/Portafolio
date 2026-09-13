@@ -1,10 +1,156 @@
-/*? Estilos propios de la sección "Sobre mi" (src/cv/aboutme.js).
-    El layout base (título + texto centrados) es .seccion / .seccion__titulo / .seccion__texto,
-    definido en style.css porque lo comparten las 4 secciones de CV; acá solo va lo que
-    hace distinta a ESTA sección en particular. */
+/*? Estilos propios de la sección "Sobre mi" (src/cv/aboutme.js): layout de
+    2 columnas (tabla de skills a la izquierda, texto a la derecha) + la
+    tarjeta de la tabla + el cuadro verde de la nota destacada.
+    El layout base de .seccion (columna, centrado) se sobreescribe acá porque
+    esta sección en particular necesita 2 columnas alineadas a la izquierda. */
 
-/* & fondo levemente distinto al de la página, solo para separarla visualmente
-   del hero y de "Profesional" mientras no tiene un diseño propio */
+/* & pasa .seccion de columna centrada a una fila de 2 columnas alineadas arriba/izquierda */
 .seccion--aboutme{
     background-color: rgba(255, 255, 255, 0.35);
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left; /* & los <h2>/<p> de adentro heredan esto en vez del centrado del .seccion base */
+    flex-wrap: wrap; /* & si no caben las 2 columnas lado a lado (pantalla angosta), la tabla pasa arriba y el texto abajo */
+    gap: 80px;
+}
+
+/* ? Columna izquierda completa: tabla de skills duras + tarjeta de skills blandas, apiladas */
+.aboutme__columna-izquierda{
+    flex: 1 1 380px; /* & que pueda achicarse/crecer, pero preferentemente arranque en 380px */
+    max-width: 530px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ? Tarjeta de la tabla de skills duras */
+.aboutme__tabla{
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* & que el borde redondeado de la tarjeta corte las filas de la lista, no que se salgan */
+}
+
+/* ? Fila de arriba de la tabla: "Capability Matrix" + "Hover para detalles" */
+.aboutme__tabla__cabecera{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+    font-family: var(--fuente-Helvica);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase; /* mayúsculas, como en la referencia */
+    color: var(--color-terciario);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08); /* línea fina que separa la cabecera de las filas */
+}
+
+.aboutme__tabla__lista{
+    list-style: none; /* saca los puntos de lista por defecto del <ul> */
+}
+
+/* ? Cada fila de skill: número + nombre + "Dominio" */
+.aboutme__tabla__fila{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06); /* separa una fila de la siguiente */
+}
+
+.aboutme__tabla__fila:last-child{
+    border-bottom: none; /* & la última fila no necesita línea, ya la cierra la tarjeta */
+}
+
+.aboutme__tabla__num{
+    font-family: var(--fuente-Helvica);
+    font-size: 0.75rem;
+    color: var(--color-hover);
+    opacity: 0.6; /* número discreto, no debe competir con el nombre de la skill */
+}
+
+.aboutme__tabla__skill{
+    flex: 1; /* & empuja "Dominio" hasta la derecha de la fila */
+    font-family: var(--fuente-TimesNR);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-terciario);
+}
+
+.aboutme__tabla__dominio{
+    font-family: var(--fuente-Helvica);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-hover);
+    opacity: 0.5;
+}
+
+/* ? Tarjeta de skills blandas, mismo estilo de tarjeta que .aboutme__tabla, debajo de ella */
+.aboutme__softskills{
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 20px 22px;
+}
+
+.aboutme__softskills__titulo{
+    font-family: var(--fuente-Helvica);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase; /* mismo tratamiento que la cabecera de la tabla de skills duras */
+    color: var(--color-terciario);
+    margin-bottom: 14px;
+}
+
+.aboutme__softskills__lista{
+    display: flex;
+    flex-wrap: wrap; /* & con 12 skills, van armando varias líneas solas según el ancho disponible */
+    gap: 8px;
+}
+
+.aboutme__softskills__pill{
+    font-family: var(--fuente-Helvica);
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background-color: rgba(18, 37, 83, 0.08); /* & un tinte muy suave de --color-terciario, no un color nuevo */
+    color: var(--color-terciario);
+}
+
+/* ? Columna derecha: título + texto + nota. flex-direction:column porque .seccion--aboutme de arriba es "row" */
+.aboutme__contenido{
+    flex: 1 1 420px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* & sobreescribe el align-items:center de .seccion, todo pegado a la izquierda */
+    gap: 40px;
+}
+
+/* ? Cuadro verde con la pregunta + about_texto_2 ("¿Pero qué más...") */
+.aboutme__nota{
+    background-color: var(--color-secundario); /* verde, como pediste */
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* & separa el título de la nota de su párrafo (si no, quedan pegados por el reset de margin) */
+}
+
+.aboutme__nota__titulo{
+    font-family: var(--fuente-TimesNR);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--color-terciario); /* & esto es lo que faltaba: era font-family en vez de color, y por eso "no se veía" */
+}
+
+.aboutme__nota__texto{
+    font-family: var(--fuente-Helvica);
+    font-size: 1.2rem;
+    color: var(--color-terciario); /* verde oscuro, buen contraste sobre el verde claro del cuadro */
+    white-space: pre-line; /* & respeta el \n de about_texto_2 (ver transaltion.js) como salto de línea real */
 }

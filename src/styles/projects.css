@@ -1,6 +1,26 @@
 /*? Estilos propios de la sección "Proyectos" (src/cv/projects.js).
-    El layout base (título + texto centrados) es .seccion / .seccion__titulo / .seccion__texto,
-    definido en style.css porque lo comparten las 4 secciones de CV.
-    Por ahora esta sección no tiene nada propio (usa el fondo normal de la página):
-    agrega acá cualquier estilo específico de "Proyectos" cuando lo necesites,
-    con el patrón .seccion--projects{ ... } para no chocar con las otras secciones. */
+    Las tarjetas de proyecto (.cv-item, .cv-lista) son el patrón compartido de
+    style.css; acá solo va lo que es específico de la tarjeta de "logro"
+    (la medalla), que no tiene viñetas sino un párrafo + una etiqueta. */
+
+/* ? Texto descriptivo de la tarjeta de logro (en vez de .cv-item__bullets, que es una lista) */
+.cv-item__descripcion{
+    font-family: var(--fuente-Helvica);
+    font-size: 1.05rem;
+    color: var(--color-text);
+}
+
+/* ? Etiqueta "Logro" arriba de la tarjeta de la medalla, para distinguirla de un proyecto técnico */
+.cv-item__badge{
+    display: inline-block;
+    font-family: var(--fuente-Helvica);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-terciario);
+    background-color: var(--color-secundario); /* verde, mismo acento que el resto del sitio */
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+}
