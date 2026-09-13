@@ -12,8 +12,8 @@ export function renderHeader() {
                 <div class="header__menu__links">
                     <a class="header__menu__link" href="#hero" data-i18n="nav_home">Inicio</a>
                     <a class="header__menu__link" href="#sobre-mi" data-i18n="nav_about">Sobre mi</a>
-                    <a class="header__menu__link" href="#liderazgo" data-i18n="nav_lider">Liderazgo</a>
                     <a class="header__menu__link" href="#profesional" data-i18n="nav_career">Profesional</a>
+                    <a class="header__menu__link" href="#liderazgo" data-i18n="nav_lider">Liderazgo</a>
                     <a class="header__menu__link" href="#footer" data-i18n="nav_contact">Contacto</a>
                 </div>
                 <!-- //& estos botones no tienen texto traducible, solo cambian el idioma al hacer click (ver src/transaltion.js) -->
