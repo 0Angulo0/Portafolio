@@ -9,6 +9,7 @@ import { renderAboutMe } from "./cv/aboutme.js";
 import { renderCareer } from "./cv/career.js";
 import { renderLeadership } from "./cv/leadership.js";
 import { renderProjects } from "./cv/projects.js";
+import { initScrollSpy } from "./scrollspy.js";
 
 //& este es EL lugar que define el orden real de la página:
 //& header -> hero -> about me -> career -> leadership -> projects -> footer
@@ -25,3 +26,19 @@ const html = `
 `;
 
 document.getElementById("app").innerHTML = html; // // #app vive en index.html, vacío a propósito
+
+//? El header es "fixed" (ver styles/style.css), así que sale del flujo normal;
+//? esta función mide su alto real y lo guarda en --header-height para que el
+//? body y el scroll-margin-top de cada sección sepan cuánto espacio dejarle.
+//? Se vuelve a medir en cada resize porque las píldoras del menú pueden envolver
+//? a una segunda línea en pantallas angostas y cambiar el alto del header.
+function ajustarAltoDelHeader() {
+    const header = document.querySelector(".header");
+    if (!header) return;
+    document.documentElement.style.setProperty("--header-height", `${header.offsetHeight}px`);
+}
+
+ajustarAltoDelHeader();
+window.addEventListener("resize", ajustarAltoDelHeader);
+
+initScrollSpy(); // // prende la píldora activa según la sección visible mientras se hace scroll
