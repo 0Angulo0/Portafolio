@@ -6,7 +6,7 @@ import { renderHeader } from "./components/header.js";
 import { renderHero } from "./components/hero.js";
 import { renderFooter } from "./components/footer.js";
 import { renderAboutMe } from "./cv/aboutme.js";
-import { renderCareer } from "./cv/career.js";
+import { renderCareer, initCareerTimeline } from "./cv/career.js";
 import { renderLeadership } from "./cv/leadership.js";
 import { renderProjects } from "./cv/projects.js";
 import { initScrollSpy } from "./scrollspy.js";
@@ -42,3 +42,4 @@ ajustarAltoDelHeader();
 window.addEventListener("resize", ajustarAltoDelHeader);
 
 initScrollSpy(); // // prende la píldora activa según la sección visible mientras se hace scroll
+initCareerTimeline(); // // arranca la línea de tiempo de "Profesional" mostrando lo más reciente (extremo derecho)
