@@ -21,11 +21,11 @@ export function renderFooter() {
                     <span>${EMAIL}</span>
                 </a>
                 <a class="footer__contacto__link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">
-                    <img class="footer__contacto__icono" src="../assets/github.png" alt="">
+                    <img class="footer__contacto__icono" src="assets/github.png" alt="">
                     <span>Github</span>
                 </a>
                 <a class="footer__contacto__link" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">
-                    <img class="footer__contacto__icono" src="../assets/linkedin.png" alt="">
+                    <img class="footer__contacto__icono" src="assets/linkedin.png" alt="">
                     <span>LinkedIn</span>
                 </a>
             </div>

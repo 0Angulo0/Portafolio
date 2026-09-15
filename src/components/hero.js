@@ -9,8 +9,8 @@ export function renderHero() {
         <section class="presentacion" id="hero">
             <!-- //? Cluster de fotos a la izquierda (moodboard). Todo con Imagem.png de placeholder hasta que pongas tus fotos -->
             <div class="presentacion__galeria presentacion__galeria--izquierda">
-                <img class="presentacion__galeria__foto presentacion__galeria__foto--1" src="../assets/Imagem.png" alt="">
-                <img class="presentacion__galeria__foto presentacion__galeria__foto--2" src="../assets/Imagem.png" alt="">
+                <img class="presentacion__galeria__foto presentacion__galeria__foto--1" src="assets/Imagem.png" alt="">
+                <img class="presentacion__galeria__foto presentacion__galeria__foto--2" src="assets/Imagem.png" alt="">
             </div>
             <div class="presentacion__contenido">
                 <!-- //& data-i18n="key" queda vacío a propósito: src/transaltion.js le mete el texto según el idioma activo -->
@@ -22,8 +22,8 @@ export function renderHero() {
             </div>
             <!-- //? Cluster de fotos a la derecha, simétrico al de la izquierda -->
             <div class="presentacion__galeria presentacion__galeria--derecha">
-                <img class="presentacion__galeria__foto presentacion__galeria__foto--3" src="../assets/Imagem.png" alt="">
-                <img class="presentacion__galeria__foto presentacion__galeria__foto--4" src="../assets/Imagem.png" alt="">
+                <img class="presentacion__galeria__foto presentacion__galeria__foto--3" src="assets/Imagem.png" alt="">
+                <img class="presentacion__galeria__foto presentacion__galeria__foto--4" src="assets/Imagem.png" alt="">
             </div>
         </section>
     `;
