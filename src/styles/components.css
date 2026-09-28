@@ -2,17 +2,20 @@
     (src/components/hero.js) y footer. Usa las variables definidas en style.css,
     así que este archivo debe cargarse DESPUÉS de style.css. */
 
-/* ? Contenedor del header (barra superior con el menú). Fijo arriba: se sigue viendo aunque hagas scroll */
+/* ? Contenedor del header (barra superior con el menú). Fijo arriba: se sigue viendo aunque hagas scroll.
+   Sin fondo propio a propósito: no se ve el rectángulo del header, solo flotan las píldoras
+   (.header__menu__links / .header__menu__langs), que ya traen su propio fondo de vidrio. */
 .header{
     position: fixed; /* & lo saca del flujo del documento y lo clava en relación a la ventana, no a la página */
     top: 0;
     left: 0;
     right: 0;
     z-index: 100; /* //& que quede siempre por encima del contenido que pasa debajo al hacer scroll */
-    background-color: var(--color-primario); /* mismo azul del fondo, para que no se transparente el contenido de atrás */
+    background-color: transparent;
     padding: 1.5rem 5%; /* aire parejo arriba/abajo y a los costados */
     display: flex;
     justify-content: center; /* & centra todo el <nav> horizontalmente en vez de dejarlo pegado a la izquierda */
+    pointer-events: none; /* & el "aire" transparente del header no bloquea clicks al contenido de abajo... */
 }
 
 /* ? Layout general del <nav>: agrupa las píldoras de navegación + el selector de idioma */
@@ -22,17 +25,28 @@
     gap: 32px; /* separación entre el grupo de links y el grupo de idioma */
     flex-wrap: wrap; /* & si no caben todas las píldoras en una fila (pantalla angosta), pasan a la siguiente línea */
     justify-content: center;
+    pointer-events: auto; /* & ...pero las píldoras (y sus links/botones) sí siguen siendo clickeables */
 }
 
-/* ? Grupo de píldoras de navegación (Inicio, Sobre mi, Profesional, Liderazgo, Contacto) */
+/* ? Grupo de píldoras de navegación (Inicio, Sobre mi, Profesional, Liderazgo, Contacto).
+   Idea tomada de un diseño de Uiverse.io (por mymiamo): en vez de que cada link sea su
+   propia píldora con borde, TODO el grupo vive dentro de una sola píldora "de vidrio"
+   (fondo semitransparente + blur), y cada link es un segmento sin borde adentro que se
+   "enciende" al pasar el mouse o al estar activo. Los colores siguen siendo los del sitio. */
 .header__menu__links{
     display: flex;
-    gap: 14px;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.35); /* & el "vidrio": un tinte blanco translúcido sobre el azul del header */
+    backdrop-filter: blur(12px) saturate(180%); /* & efecto frost; en un header con fondo sólido se nota poco, pero no estorba */
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
     flex-wrap: wrap;
     justify-content: center;
 }
 
-/* ? Cada link de navegación con forma de píldora/óvalo (borde + esquinas 100% redondeadas) */
+/* ? Cada link de navegación: ya no tiene borde propio, es un segmento dentro de la píldora de vidrio */
 .header__menu__link{
     font-family: var(--fuente-Helvica);
     font-size: 1.05rem;
@@ -40,24 +54,54 @@
     color: var(--color-terciario); /* verde oscuro, para contrastar con el fondo azul */
     text-decoration: none; /* quita el subrayado típico de los links */
     text-align: center;
-    padding: 10px 26px; /* & el padding horizontal amplio es lo que le da la forma ovalada, no solo el border-radius */
-    border: 2px solid var(--color-terciario); /* borde que dibuja el contorno de la píldora */
-    border-radius: 999px; /* un valor bien alto = esquinas totalmente redondas, sin importar el tamaño del botón */
+    padding: 10px 22px;
+    border-radius: 999px;
     background-color: transparent;
-    transition: background-color .2s ease, color .2s ease; /* & transición suave al pasar de inactivo a activo */
+    /* & "spring" easing (con un poquito de rebote) en vez de una transición lineal plana,
+       para que el hover se sienta con más resorte, como en la referencia de Uiverse */
+    transition: background-color .18s cubic-bezier(.34, 1.56, .64, 1),
+                color .18s cubic-bezier(.34, 1.56, .64, 1),
+                transform .18s cubic-bezier(.34, 1.56, .64, 1),
+                box-shadow .3s ease;
 }
 
-/* ? Píldora de la sección que estás viendo ahora mismo (la prende/apaga src/scrollspy.js) */
+/* & efecto onhover: fondo clarito + sombra interior tipo relieve de vidrio + una leve inclinación.
+   (la referencia de Uiverse traía "transform: rotate(2.2)" sin unidad, que es inválido y no hace
+   nada; acá sí le puse "deg" para que la inclinación se vea de verdad) */
+.header__menu__link:hover{
+    background-color: rgba(255, 255, 255, 0.55);
+    box-shadow: inset 2px 2px 5px -2px rgba(255, 255, 255, 0.6),
+                inset -2px -1px 5px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -2px 0 rgba(255, 255, 255, 0.3);
+    transform: rotate(2deg);
+    color: var(--color-hover);
+}
+
+/* ? Píldora de la sección que estás viendo ahora mismo (la prende/apaga src/scrollspy.js):
+   mismo relieve "encendido" del hover, para que se note que está activa aunque no le pases el mouse */
 .header__menu__link.is-active{
-    background-color: var(--color-secundario); /* verde claro, tal cual pediste */
-    border-color: var(--color-secundario);
+    background-color: var(--color-secundario); /* verde claro, tal cual pediste desde el principio */
     color: var(--color-terciario);
+    box-shadow: inset 2px 2px 5px -2px rgba(255, 255, 255, 0.6),
+                inset -2px -1px 5px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -2px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* ? Grupo de botones de idioma (ES/EN), mismo estilo de píldora pero más chico */
+/* & feedback al hacer click: se encoge un toque, como en la referencia */
+.header__menu__link:active{
+    transform: scale(0.97);
+}
+
+/* ? Grupo de botones de idioma (ES/EN): la misma píldora de vidrio, mismo tratamiento, más chica */
 .header__menu__langs{
     display: flex;
-    gap: 8px;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 .header__menu__lang{
@@ -66,16 +110,36 @@
     font-weight: 600;
     padding: 6px 16px;
     border-radius: 999px;
-    border: 2px solid var(--color-terciario);
+    border: none;
     background-color: transparent;
     color: var(--color-terciario);
     cursor: pointer; /* deja claro que es clickeable (los <button> no siempre lo muestran) */
+    transition: background-color .18s cubic-bezier(.34, 1.56, .64, 1),
+                color .18s cubic-bezier(.34, 1.56, .64, 1),
+                transform .18s cubic-bezier(.34, 1.56, .64, 1),
+                box-shadow .3s ease;
+}
+
+.header__menu__lang:hover{
+    background-color: rgba(255, 255, 255, 0.55);
+    box-shadow: inset 2px 2px 5px -2px rgba(255, 255, 255, 0.6),
+                inset -2px -1px 5px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -2px 0 rgba(255, 255, 255, 0.3);
+    transform: rotate(2deg);
+    color: var(--color-hover);
 }
 
 /* ? Botón del idioma actualmente activo (lo marca src/transaltion.js agregando/quitando esta clase) */
 .header__menu__lang.is-active{
     background-color: var(--color-secundario);
-    border-color: var(--color-secundario);
+    color: var(--color-terciario);
+    box-shadow: inset 2px 2px 5px -2px rgba(255, 255, 255, 0.6),
+                inset -2px -1px 5px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -2px 0 rgba(255, 255, 255, 0.3);
+}
+
+.header__menu__lang:active{
+    transform: scale(0.97);
 }
 
 /* ? Sección principal de presentación (hero, src/components/hero.js): fotos a los lados + texto centrado en medio */
@@ -139,21 +203,38 @@
     align-items: flex-end; /* fotos pegadas al lado de adentro del cluster derecho, simétrico */
 }
 
-/* ? Contenedor de cada foto SIN rotar: sirve de marco para el overlay de descripción
-   que aparece al hacer hover (ver .presentacion__galeria__caption). La rotación
-   "polaroid" vive en la <img> de adentro, no acá, para que el texto salga derecho. */
+/* ? Contenedor de cada foto: es la "tarjeta" que hace el efecto flip. Idea tomada
+   de un diseño de Uiverse.io (por samuelfcosta18): la foto se encoge (como el ícono
+   del ejemplo) y la descripción entra girando como una tapa desde abajo (rotateX),
+   en vez de taparla de golpe o deslizarse al lado. "perspective" es lo que hace que
+   ese giro se vea 3D y no un simple aplastón vertical; "overflow:hidden" recorta la
+   descripción justo al tamaño/forma de la tarjeta mientras gira. */
 .presentacion__galeria__item{
     position: relative;
     display: inline-block;
+    overflow: hidden;
+    perspective: 1000px;
+    border-radius: 4px; /* mismo radio que la foto, para que la tapa calce exacto */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* & la sombra vive acá y no en la foto: el overflow:hidden la recortaría */
+    transition: transform .3s cubic-bezier(.175, .885, .32, 1.275); /* & curva "con rebote", igual que la referencia */
 }
+
+/* & la inclinación "polaroid" vive en la tarjeta completa (no en la foto), así la foto y la
+   descripción se inclinan juntas y el overflow:hidden recorta siguiendo esa misma inclinación.
+   Se usa "rotate" suelto (no transform) para que no choque con el transform:scale del hover. */
+.presentacion__galeria__item--1{ rotate: -6deg; } /* construcción del robot, arriba-izquierda */
+.presentacion__galeria__item--2{ rotate: 6deg; } /* entrevista, abajo-izquierda */
+.presentacion__galeria__item--3{ rotate: 2deg; } /* panel ONU Mujeres, arriba-derecha */
+.presentacion__galeria__item--4{ rotate: 6deg; } /* Latinas en Tech, abajo-derecha */
 
 /* & desfase grande en X (y un poco en Y) para que la foto de abajo NO quede
    alineada justo debajo de la de arriba, como en un collage real */
-.presentacion__galeria__item--2{ margin-left: 250px;}
-.presentacion__galeria__item--4{ margin-right: -250px;}
+.presentacion__galeria__item--2{ margin-left: 250px; }
+.presentacion__galeria__item--4{ margin-right: -250px; }
 
 .presentacion__galeria__item:hover{
-    z-index: 10; /* & que la foto agrandada + su descripción queden por encima de las demás al hacer hover */
+    z-index: 10; /* & que la tarjeta agrandada + su descripción queden por encima de las demás */
+    transform: scale(1.08); /* & la tarjeta completa crece un poco, como ".card:hover" en la referencia */
 }
 
 /* ? Estilo "polaroid" de cada foto: marco blanco grueso + sombra */
@@ -162,48 +243,40 @@
     width: 240px; /* & mucho más grandes que antes (170/120px) */
     border: 8px solid #fff;
     border-radius: 4px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra suave para que "floten" sobre el fondo */
     background-color: #fff;
-    transition: transform .25s ease; /* & anima el "agrandado" del hover */
+    scale: 1;
+    transition: scale .5s cubic-bezier(.175, .885, .32, 1.275);
 }
 
-/* & las 4 se inclinan hacia el mismo lado (derecha = rotación positiva); la de
-   ONU (--3) casi derecha, apenas 4 grados, las otras 3 un poco más marcadas */
-.presentacion__galeria__foto--1{ transform: rotate(-6deg); } /* construcción del robot, arriba-izquierda */
-.presentacion__galeria__foto--2{ transform: rotate(6deg); } /* entrevista, abajo-izquierda */
-.presentacion__galeria__foto--3{ transform: rotate(2deg); } /* panel ONU Mujeres, arriba-derecha */
-.presentacion__galeria__foto--4{ transform: rotate(6deg); } /* Latinas en Tech, abajo-derecha */
+/* & al hacer hover, la foto se encoge hasta desaparecer (igual que el ícono del ejemplo) */
+.presentacion__galeria__item:hover .presentacion__galeria__foto{
+    scale: 0;
+}
 
-/* & efecto onhover: la foto se agranda un poco sin perder su inclinación (rotate + scale juntos) */
-.presentacion__galeria__item:hover .presentacion__galeria__foto--1{ transform: rotate(6deg) scale(1.5); }
-.presentacion__galeria__item:hover .presentacion__galeria__foto--2{ transform: rotate(-6deg) scale(1.5); }
-.presentacion__galeria__item:hover .presentacion__galeria__foto--3{ transform: rotate(-4deg) scale(1.5); }
-.presentacion__galeria__item:hover .presentacion__galeria__foto--4{ transform: rotate(-6deg) scale(1.5); }
-
-/* ? Descripción que aparece encima de la foto al hacer hover. "inset:8px" la deja
-   justo del tamaño del área de la foto (sin contar el marco blanco de 8px). No
-   rota (a diferencia de la <img>), así el texto siempre se lee derecho. */
+/* ? Descripción: cubre toda la tarjeta pero arranca "abatida" hacia atrás (rotateX -90deg,
+   con bisagra abajo) así que no se ve; al hacer hover gira a 0deg y se para derecha,
+   como si fuera una tapa que se abre desde el fondo de la tarjeta. */
 .presentacion__galeria__caption{
     position: absolute;
-    inset: 1px;
+    inset: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 10px;
-    background-color: rgba(18, 37, 83, 0.92); /* --color-terciario con transparencia */
+    text-align: left;
+    padding: 16px;
+    box-sizing: border-box;
+    background-color: rgba(18, 37, 83, 0.96); /* --color-terciario con transparencia */
     color: var(--color-primario);
     font-family: var(--fuente-Helvica);
-    font-size: 1rem;
-    line-height: 1.35;
-    border-radius: 2px;
-    opacity: 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    transform: rotateX(-90deg);
+    transform-origin: bottom;
+    transition: transform .5s cubic-bezier(.175, .885, .32, 1.275);
     pointer-events: none; /* & que no le robe el hover a la foto, el trigger sigue siendo .presentacion__galeria__item */
-    transition: opacity .25s ease;
 }
 
 .presentacion__galeria__item:hover .presentacion__galeria__caption{
-    opacity: 1;
+    transform: rotateX(0deg);
 }
 
 /* ? Bloque de "accede a mis redes" con el subtítulo y los links a Instagram/Github (actualmente sin usar en el hero) */
