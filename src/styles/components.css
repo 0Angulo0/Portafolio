@@ -82,9 +82,9 @@
 .presentacion{
     display: flex;
     align-items: center; /* centra verticalmente las fotos y el texto (eje cruzado) */
-    justify-content: center; /* centra horizontalmente todo el contenido (eje principal) */
-    gap: 48px; /* & separación entre el cluster izquierdo, el texto y el cluster derecho */
-    padding: 5rem 5% 3rem;
+    /*justify-content: center; /* centra horizontalmente todo el contenido (eje principal) */
+    /*gap: 48px;  & separación entre el cluster izquierdo, el texto y el cluster derecho */
+    padding: 1.5rem 8%;
     flex-wrap: wrap; /* & si no cabe todo en una fila (pantalla angosta), el texto pasa a su propia línea */
     scroll-margin-top: var(--header-height); /* & que la sección no quede tapada bajo el header fijo al llegar por scroll */
 }
@@ -104,7 +104,7 @@
     display: flex;
     flex-direction: column; /* & pone cada <span> (Daniela / Angulo) en su propia línea */
     align-items: center;
-    line-height: 1.05; /* & junta un poco las dos líneas para que se vean como un solo bloque de nombre */
+    line-height: 1; /* & junta un poco las dos líneas para que se vean como un solo bloque de nombre */
     font-size: 7.5rem;
     font-family: var(--fuente-TimesNR); /* fuente destacada para el título principal */
     color: var(--color-terciario);
@@ -123,9 +123,7 @@
     font-family: var(--fuente-Helvica);
     color: var(--color-text);
 }
-
 /* ? Clusters de fotos decorativas a los lados del nombre (estilo moodboard/collage) */
-/* //& por ahora usan assets/Imagem.png de placeholder en las 4 posiciones: cámbialas por tus fotos cuando quieras */
 .presentacion__galeria{
     display: flex;
     flex-direction: column;
@@ -141,20 +139,72 @@
     align-items: flex-end; /* fotos pegadas al lado de adentro del cluster derecho, simétrico */
 }
 
+/* ? Contenedor de cada foto SIN rotar: sirve de marco para el overlay de descripción
+   que aparece al hacer hover (ver .presentacion__galeria__caption). La rotación
+   "polaroid" vive en la <img> de adentro, no acá, para que el texto salga derecho. */
+.presentacion__galeria__item{
+    position: relative;
+    display: inline-block;
+}
+
+/* & desfase grande en X (y un poco en Y) para que la foto de abajo NO quede
+   alineada justo debajo de la de arriba, como en un collage real */
+.presentacion__galeria__item--2{ margin-left: 250px;}
+.presentacion__galeria__item--4{ margin-right: -200px;}
+
+.presentacion__galeria__item:hover{
+    z-index: 10; /* & que la foto agrandada + su descripción queden por encima de las demás al hacer hover */
+}
+
 /* ? Estilo "polaroid" de cada foto: marco blanco grueso + sombra */
 .presentacion__galeria__foto{
-    width: 170px;
+    display: block;
+    width: 240px; /* & mucho más grandes que antes (170/120px) */
     border: 8px solid #fff;
     border-radius: 4px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra suave para que "floten" sobre el fondo */
     background-color: #fff;
+    transition: transform .25s ease; /* & anima el "agrandado" del hover */
 }
 
-/* & pequeñas rotaciones alternadas para que se vea como un collage real, no una grilla perfecta */
-.presentacion__galeria__foto--1{ transform: rotate(-6deg); }
-.presentacion__galeria__foto--2{ width: 120px; margin-left: 50px; transform: rotate(4deg); }
-.presentacion__galeria__foto--3{ transform: rotate(6deg); }
-.presentacion__galeria__foto--4{ width: 120px; margin-right: 50px; transform: rotate(-4deg); }
+/* & las 4 se inclinan hacia el mismo lado (derecha = rotación positiva); la de
+   ONU (--3) casi derecha, apenas 4 grados, las otras 3 un poco más marcadas */
+.presentacion__galeria__foto--1{ transform: rotate(-6deg); } /* construcción del robot, arriba-izquierda */
+.presentacion__galeria__foto--2{ transform: rotate(6deg); } /* entrevista, abajo-izquierda */
+.presentacion__galeria__foto--3{ transform: rotate(2deg); } /* panel ONU Mujeres, arriba-derecha */
+.presentacion__galeria__foto--4{ transform: rotate(6deg); } /* Latinas en Tech, abajo-derecha */
+
+/* & efecto onhover: la foto se agranda un poco sin perder su inclinación (rotate + scale juntos) */
+.presentacion__galeria__item:hover .presentacion__galeria__foto--1{ transform: rotate(6deg) scale(1.5); }
+.presentacion__galeria__item:hover .presentacion__galeria__foto--2{ transform: rotate(-6deg) scale(1.5); }
+.presentacion__galeria__item:hover .presentacion__galeria__foto--3{ transform: rotate(-4deg) scale(1.5); }
+.presentacion__galeria__item:hover .presentacion__galeria__foto--4{ transform: rotate(-6deg) scale(1.5); }
+
+/* ? Descripción que aparece encima de la foto al hacer hover. "inset:8px" la deja
+   justo del tamaño del área de la foto (sin contar el marco blanco de 8px). No
+   rota (a diferencia de la <img>), así el texto siempre se lee derecho. */
+.presentacion__galeria__caption{
+    position: absolute;
+    inset: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(18, 37, 83, 0.92); /* --color-terciario con transparencia */
+    color: var(--color-primario);
+    font-family: var(--fuente-Helvica);
+    font-size: 1rem;
+    line-height: 1.35;
+    border-radius: 2px;
+    opacity: 0;
+    pointer-events: none; /* & que no le robe el hover a la foto, el trigger sigue siendo .presentacion__galeria__item */
+    transition: opacity .25s ease;
+}
+
+.presentacion__galeria__item:hover .presentacion__galeria__caption{
+    opacity: 1;
+}
 
 /* ? Bloque de "accede a mis redes" con el subtítulo y los links a Instagram/Github (actualmente sin usar en el hero) */
 .presentacion__enlaces{

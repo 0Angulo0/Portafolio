@@ -21,6 +21,20 @@ const translations = {
                     "en cada solución.",
         home_redes_subtitulo: "Conoce más detalles ↓",
 
+        //& --- descripciones que aparecen al hacer hover sobre las 4 fotos del hero (src/components/hero.js) ---
+        hero_foto_1: "Entrevistada por CONECTA, el medio de noticias del Tecnológico de Monterrey, sobre el impacto " +
+            "de las mujeres en áreas STEAM, como presidenta y driver del equipo de robótica \"Tamán Keet 3933\" en " +
+            "la categoría VEX Robotics Competition 2024, primer equipo integrado completamente por mujeres. ",
+        hero_foto_2: "Construyendo el robot para la categoría VEX Robotics Competition como programadora del " +
+            "equipo, junto a la líder de ingeniería y la co-driver: el subequipo conformado solo por mujeres que " +
+            "ayudé a impulsar.",
+        hero_foto_3: "Panelista en el conversatorio \"Desinformación de Género y Participación Digital de Mujeres " +
+            "Jóvenes\", organizado por Eon Institute y la Fundación Friedrich Naumann, en las oficinas de ONU Mujeres.",
+        hero_foto_4: "En Latinas en Tech Policy 2026, organizado por PIT Policy Lab, Mujeres en Tech y TikTok, " +
+            "conviví con líderes en la intersección de tecnología, política pública y equidad de género, una " +
+            "experiencia que reafirmó mi compromiso de abrir camino para las siguientes generaciones de mujeres " +
+            "en tecnología.",
+
         //& --- sección "Sobre mi" (src/cv/aboutme.js) ---
         //& título partido en 3 keys para poder resaltar solo "soy" (mismo truco que home_titulo_1/2 del hero)
         about_titulo_pre: "¿Quién",
@@ -39,14 +53,13 @@ const translations = {
         about_texto_negritas: "He estado en más de 10 posiciones de liderazgo en 7 equipos " +
             "diferentes, logrando un impacto en más de 400 personas.",
 
-        //& --- tabla de skills de "Sobre mi" (src/cv/aboutme.js); los nombres de las skills duras
-        //& (Python, SQL, etc.) están directo en el JS porque no se traducen entre es/en ---
-        aboutme_tabla_titulo: "Capability Matrix",
-        aboutme_tabla_hover: "Hover para detalles",
-        aboutme_tabla_dominio: "Dominio",
+        //& --- títulos de las 2 arenas de burbujas de "Sobre mi" (src/cv/aboutme.js) ---
+        aboutme_arena_duras: "Habilidades Duras",
+        aboutme_arena_blandas: "Habilidades Blandas",
 
-        //& --- skills blandas de "Sobre mi" (src/cv/aboutme.js); estas sí se traducen ---
-        aboutme_softskills_titulo: "Habilidades Blandas",
+        //& --- skills blandas de "Sobre mi" (src/cv/aboutme.js); los nombres de las skills duras
+        //& (Python, SQL, etc.) están directo en el JS porque no se traducen entre es/en; las
+        //& blandas sí se traducen ---
         skill_soft_1: "Comunicación empática",
         skill_soft_2: "Resolución de conflictos",
         skill_soft_3: "Coordinación de equipos multidisciplinarios",
@@ -221,6 +234,17 @@ const translations = {
         home_redes_instagram: "Instagram",
         home_redes_github: "Github",
 
+        hero_foto_1: "Interviewed by CONECTA, Tecnológico de Monterrey's news outlet, on the impact of women in " +
+            "STEAM fields, as president and driver of the \"Tamán Keet 3933\" robotics team at the 2023 VEX " +
+            "Robotics Competition — the team's first all-women generation.",
+        hero_foto_2: "Building the robot for the VEX Robotics Competition as the team's programmer, alongside the " +
+            "engineering lead and co-driver: the all-women subteam I helped drive forward.",
+        hero_foto_3: "Panelist at the discussion \"Gender Disinformation and Digital Participation of Young " +
+            "Women,\" organized by Eon Institute and the Friedrich Naumann Foundation, hosted at the UN Women offices.",
+        hero_foto_4: "At Latinas en Tech Policy 2026 —hosted by PIT Policy Lab, Mujeres en Tech, and TikTok— I " +
+            "connected with leaders at the intersection of technology, public policy, and gender equity, an " +
+            "experience that reaffirmed my commitment to opening doors for the next generation of women in tech.",
+
         about_titulo_pre: "Who",
         about_titulo_destacado: "am",
         about_titulo_post: "I?",
@@ -234,11 +258,9 @@ const translations = {
         about_texto_negritas: "I've held more than 10 leadership positions across 7 different teams, " +
             "reaching an impact of over 400 people.",
 
-        aboutme_tabla_titulo: "Capability Matrix",
-        aboutme_tabla_hover: "Hover for details",
-        aboutme_tabla_dominio: "Proficiency",
+        aboutme_arena_duras: "Hard Skills",
+        aboutme_arena_blandas: "Soft Skills",
 
-        aboutme_softskills_titulo: "Soft Skills",
         skill_soft_1: "Empathetic communication",
         skill_soft_2: "Conflict resolution",
         skill_soft_3: "Multidisciplinary team coordination",
