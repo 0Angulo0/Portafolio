@@ -84,7 +84,7 @@
     align-items: center; /* centra verticalmente las fotos y el texto (eje cruzado) */
     /*justify-content: center; /* centra horizontalmente todo el contenido (eje principal) */
     /*gap: 48px;  & separación entre el cluster izquierdo, el texto y el cluster derecho */
-    padding: 1.5rem 8%;
+    padding: 1.8rem 8%;
     flex-wrap: wrap; /* & si no cabe todo en una fila (pantalla angosta), el texto pasa a su propia línea */
     scroll-margin-top: var(--header-height); /* & que la sección no quede tapada bajo el header fijo al llegar por scroll */
 }
@@ -150,7 +150,7 @@
 /* & desfase grande en X (y un poco en Y) para que la foto de abajo NO quede
    alineada justo debajo de la de arriba, como en un collage real */
 .presentacion__galeria__item--2{ margin-left: 250px;}
-.presentacion__galeria__item--4{ margin-right: -200px;}
+.presentacion__galeria__item--4{ margin-right: -250px;}
 
 .presentacion__galeria__item:hover{
     z-index: 10; /* & que la foto agrandada + su descripción queden por encima de las demás al hacer hover */
