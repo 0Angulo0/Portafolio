@@ -35,6 +35,24 @@ const translations = {
             "experiencia que reafirmó mi compromiso de abrir camino para las siguientes generaciones de mujeres " +
             "en tecnología.",
 
+        //& --- texto alternativo (alt) de las 4 fotos del hero: describe lo que SE VE en la foto;
+        //& la historia completa ya la da el <figcaption> de cada una, por eso estos son cortos ---
+        hero_foto_1_alt: "Daniela con integrantes del equipo de robótica Tamán Keet 3933 durante la entrevista para CONECTA",
+        hero_foto_2_alt: "Daniela trabajando en el robot de VEX junto a sus compañeras de equipo",
+        hero_foto_3_alt: "Daniela frente al logotipo de ONU Mujeres",
+        hero_foto_4_alt: "Daniela en Latinas en Tech Policy 2026, frente a un arco decorado de TikTok",
+
+        //& --- letreros que avisan cómo ver la historia de cada foto (src/components/hero.js) ---
+        hero_foto_pista: "Pasa el cursor para ver la historia",
+        hero_carrusel_pista: "Desliza para ver más fotos →",
+
+        //& --- nombres para lector de pantalla (aria-label) de elementos sin texto visible propio ---
+        nav_aria: "Navegación principal",
+        idioma_aria: "Cambiar idioma",
+        hero_galeria_aria: "Fotos destacadas",
+        career_timeline_aria: "Línea de tiempo de experiencia profesional. Desplázate hacia la izquierda para ver puestos anteriores",
+        footer_nueva_pestana: "(se abre en otra pestaña)",
+
         //& --- sección "Sobre mi" (src/cv/aboutme.js) ---
         //& título partido en 3 keys para poder resaltar solo "soy" (mismo truco que home_titulo_1/2 del hero)
         about_titulo_pre: "¿Quién",
@@ -53,9 +71,12 @@ const translations = {
         about_texto_negritas: "He estado en más de 10 posiciones de liderazgo en 7 equipos " +
             "diferentes, logrando un impacto en más de 400 personas.",
 
-        //& --- títulos de las 2 arenas de burbujas de "Sobre mi" (src/cv/aboutme.js) ---
-        aboutme_arena_duras: "Habilidades Duras",
-        aboutme_arena_blandas: "Habilidades Blandas",
+        //& --- títulos de las 2 tablas de skills de "Sobre mi" (src/cv/aboutme.js) ---
+        aboutme_skills_duras: "Habilidades Duras",
+        aboutme_skills_blandas: "Habilidades Blandas",
+        //& cabecera de las 2 tablas de skills ("#" se lee "Número" en el lector de pantalla)
+        aboutme_tabla_num: "Número",
+        aboutme_tabla_habilidad: "Habilidad",
 
         //& --- skills blandas de "Sobre mi" (src/cv/aboutme.js); los nombres de las skills duras
         //& (Python, SQL, etc.) están directo en el JS porque no se traducen entre es/en; las
@@ -245,6 +266,20 @@ const translations = {
             "connected with leaders at the intersection of technology, public policy, and gender equity, an " +
             "experience that reaffirmed my commitment to opening doors for the next generation of women in tech.",
 
+        hero_foto_1_alt: "Daniela with members of the Tamán Keet 3933 robotics team during the CONECTA interview",
+        hero_foto_2_alt: "Daniela working on the VEX robot alongside her teammates",
+        hero_foto_3_alt: "Daniela in front of the UN Women logo",
+        hero_foto_4_alt: "Daniela at Latinas en Tech Policy 2026, in front of a TikTok-decorated arch",
+
+        hero_foto_pista: "Hover to see the story",
+        hero_carrusel_pista: "Swipe to see more photos →",
+
+        nav_aria: "Main navigation",
+        idioma_aria: "Change language",
+        hero_galeria_aria: "Featured photos",
+        career_timeline_aria: "Professional experience timeline. Scroll left to see earlier roles",
+        footer_nueva_pestana: "(opens in a new tab)",
+
         about_titulo_pre: "Who",
         about_titulo_destacado: "am",
         about_titulo_post: "I?",
@@ -258,8 +293,10 @@ const translations = {
         about_texto_negritas: "I've held more than 10 leadership positions across 7 different teams, " +
             "reaching an impact of over 400 people.",
 
-        aboutme_arena_duras: "Hard Skills",
-        aboutme_arena_blandas: "Soft Skills",
+        aboutme_skills_duras: "Hard Skills",
+        aboutme_skills_blandas: "Soft Skills",
+        aboutme_tabla_num: "Number",
+        aboutme_tabla_habilidad: "Skill",
 
         skill_soft_1: "Empathetic communication",
         skill_soft_2: "Conflict resolution",
@@ -442,11 +479,23 @@ function applyTranslations(lang) {
         }
     });
 
+    //& igual, pero para el atributo "aria-label" (data-i18n-aria="key"): el nombre que lee
+    //& el lector de pantalla en elementos que no tienen texto visible propio (nav, regiones...)
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-aria");
+        if (dict[key] !== undefined) {
+            el.setAttribute("aria-label", dict[key]);
+        }
+    });
+
     document.documentElement.lang = lang === "en" ? "en" : "es-mx"; // // actualiza el atributo lang del <html> para accesibilidad/SEO
 
-    //& marca visualmente (clase "is-active") cuál botón de idioma corresponde al idioma actual
+    //& marca cuál botón de idioma está activo: visualmente (clase "is-active") y para
+    //& el lector de pantalla (aria-pressed), que si no, no tiene forma de saberlo
     document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.langSwitch === lang);
+        const activo = btn.dataset.langSwitch === lang;
+        btn.classList.toggle("is-active", activo);
+        btn.setAttribute("aria-pressed", String(activo));
     });
 
     localStorage.setItem(STORAGE_KEY, lang); // // guarda la elección para que persista al navegar entre páginas

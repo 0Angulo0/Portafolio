@@ -38,7 +38,7 @@
     gap: 4px;
     padding: 6px;
     border-radius: 999px;
-    background-color: rgba(255, 255, 255, 0.35); /* & el "vidrio": un tinte blanco translúcido sobre el azul del header */
+    background-color: rgba(255, 255, 255, 0.8); /* & el "vidrio": blanco al 80%. Con el header transparente el menú flota sobre TODO (incluido el footer oscuro); con menos opacidad el texto bajaba a 3:1 de contraste ahí */
     backdrop-filter: blur(12px) saturate(180%); /* & efecto frost; en un header con fondo sólido se nota poco, pero no estorba */
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
@@ -69,7 +69,7 @@
    (la referencia de Uiverse traía "transform: rotate(2.2)" sin unidad, que es inválido y no hace
    nada; acá sí le puse "deg" para que la inclinación se vea de verdad) */
 .header__menu__link:hover{
-    background-color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(170, 204, 238, 0.6); /* & tinte de --color-primario: sobre el vidrio casi blanco, un hover blanco ya no se notaría */
     box-shadow: inset 2px 2px 5px -2px rgba(255, 255, 255, 0.6),
                 inset -2px -1px 5px 0 rgba(255, 255, 255, 0.6),
                 inset 0 -2px 0 rgba(255, 255, 255, 0.3);
@@ -98,7 +98,7 @@
     gap: 4px;
     padding: 6px;
     border-radius: 999px;
-    background-color: rgba(255, 255, 255, 0.35);
+    background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
@@ -121,7 +121,7 @@
 }
 
 .header__menu__lang:hover{
-    background-color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(170, 204, 238, 0.6); /* & tinte de --color-primario: sobre el vidrio casi blanco, un hover blanco ya no se notaría */
     box-shadow: inset 2px 2px 5px -2px rgba(255, 255, 255, 0.6),
                 inset -2px -1px 5px 0 rgba(255, 255, 255, 0.6),
                 inset 0 -2px 0 rgba(255, 255, 255, 0.3);
@@ -142,12 +142,12 @@
     transform: scale(0.97);
 }
 
-/* ? Sección principal de presentación (hero, src/components/hero.js): fotos a los lados + texto centrado en medio */
+/* ? Sección principal de presentación (hero, src/components/hero.js). Estilos base que
+   comparten todas las pantallas; abajo hay 2 bloques @media: escritorio (collage con
+   flip) y celular/tablet (carrusel). */
 .presentacion{
     display: flex;
     align-items: center; /* centra verticalmente las fotos y el texto (eje cruzado) */
-    /*justify-content: center; /* centra horizontalmente todo el contenido (eje principal) */
-    /*gap: 48px;  & separación entre el cluster izquierdo, el texto y el cluster derecho */
     padding: 1.8rem 8%;
     flex-wrap: wrap; /* & si no cabe todo en una fila (pantalla angosta), el texto pasa a su propia línea */
     scroll-margin-top: var(--header-height); /* & que la sección no quede tapada bajo el header fijo al llegar por scroll */
@@ -169,7 +169,7 @@
     flex-direction: column; /* & pone cada <span> (Daniela / Angulo) en su propia línea */
     align-items: center;
     line-height: 1; /* & junta un poco las dos líneas para que se vean como un solo bloque de nombre */
-    font-size: 7.5rem;
+    font-size: clamp(3.2rem, 11vw, 7.5rem); /* & 7.5rem en pantalla grande, se encoge solo en celular en vez de desbordarse */
     font-family: var(--fuente-TimesNR); /* fuente destacada para el título principal */
     color: var(--color-terciario);
 }
@@ -183,100 +183,240 @@
 }
 
 .presentacion__contenido__texto{
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
     font-family: var(--fuente-Helvica);
     color: var(--color-text);
 }
-/* ? Clusters de fotos decorativas a los lados del nombre (estilo moodboard/collage) */
+
+/* ? Contenedor de las 4 fotos. En escritorio "display: contents" lo hace desaparecer como
+   caja: sus 2 grupos (izquierda/derecha) quedan como hijos directos de .presentacion y se
+   acomodan a los lados del nombre con "order". En celular se vuelve el carrusel (abajo). */
+.presentacion__fotos{
+    display: contents;
+}
+
+/* ? Letrero "Desliza para ver más fotos": solo existe en celular/tablet */
+.presentacion__fotos__pista{
+    display: none;
+}
+
+/* ? Grupos de fotos (izquierda/derecha del nombre, estilo collage) */
 .presentacion__galeria{
     display: flex;
     flex-direction: column;
     gap: 20px;
-    flex-shrink: 0; /* & no dejar que el cluster se achique para "robarle" espacio al texto central */
+    flex-shrink: 0; /* & no dejar que el grupo se achique para "robarle" espacio al texto central */
 }
 
+/* & el nombre va primero en el HTML (mejor para el lector de pantalla), así que el lado
+   izquierdo/derecho de las fotos se arma con order: fotos izq (1), nombre (2), fotos der (3) */
 .presentacion__galeria--izquierda{
-    align-items: flex-start; /* fotos pegadas al lado de adentro del cluster izquierdo */
+    align-items: flex-start; /* fotos pegadas al lado de adentro del grupo izquierdo */
+    order: 1;
 }
-
+.presentacion__contenido{
+    order: 2;
+}
 .presentacion__galeria--derecha{
-    align-items: flex-end; /* fotos pegadas al lado de adentro del cluster derecho, simétrico */
+    align-items: flex-end; /* fotos pegadas al lado de adentro del grupo derecho, simétrico */
+    order: 3;
 }
 
-/* ? Contenedor de cada foto: es la "tarjeta" que hace el efecto flip. Idea tomada
-   de un diseño de Uiverse.io (por samuelfcosta18): la foto se encoge (como el ícono
-   del ejemplo) y la descripción entra girando como una tapa desde abajo (rotateX),
-   en vez de taparla de golpe o deslizarse al lado. "perspective" es lo que hace que
-   ese giro se vea 3D y no un simple aplastón vertical; "overflow:hidden" recorta la
-   descripción justo al tamaño/forma de la tarjeta mientras gira. */
+/* ? Cada foto + su historia (<figure>). Base común a todas las pantallas */
 .presentacion__galeria__item{
     position: relative;
-    display: inline-block;
     overflow: hidden;
-    perspective: 1000px;
-    border-radius: 4px; /* mismo radio que la foto, para que la tapa calce exacto */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* & la sombra vive acá y no en la foto: el overflow:hidden la recortaría */
-    transition: transform .3s cubic-bezier(.175, .885, .32, 1.275); /* & curva "con rebote", igual que la referencia */
-}
-
-/* & la inclinación "polaroid" vive en la tarjeta completa (no en la foto), así la foto y la
-   descripción se inclinan juntas y el overflow:hidden recorta siguiendo esa misma inclinación.
-   Se usa "rotate" suelto (no transform) para que no choque con el transform:scale del hover. */
-.presentacion__galeria__item--1{ rotate: -6deg; } /* construcción del robot, arriba-izquierda */
-.presentacion__galeria__item--2{ rotate: 6deg; } /* entrevista, abajo-izquierda */
-.presentacion__galeria__item--3{ rotate: 2deg; } /* panel ONU Mujeres, arriba-derecha */
-.presentacion__galeria__item--4{ rotate: 6deg; } /* Latinas en Tech, abajo-derecha */
-
-/* & desfase grande en X (y un poco en Y) para que la foto de abajo NO quede
-   alineada justo debajo de la de arriba, como en un collage real */
-.presentacion__galeria__item--2{ margin-left: 250px; }
-.presentacion__galeria__item--4{ margin-right: -250px; }
-
-.presentacion__galeria__item:hover{
-    z-index: 10; /* & que la tarjeta agrandada + su descripción queden por encima de las demás */
-    transform: scale(1.08); /* & la tarjeta completa crece un poco, como ".card:hover" en la referencia */
-}
-
-/* ? Estilo "polaroid" de cada foto: marco blanco grueso + sombra */
-.presentacion__galeria__foto{
-    display: block;
-    width: 240px; /* & mucho más grandes que antes (170/120px) */
-    border: 8px solid #fff;
     border-radius: 4px;
     background-color: #fff;
-    scale: 1;
-    transition: scale .5s cubic-bezier(.175, .885, .32, 1.275);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* & la sombra vive acá y no en la foto: el overflow:hidden la recortaría */
 }
 
-/* & al hacer hover, la foto se encoge hasta desaparecer (igual que el ícono del ejemplo) */
-.presentacion__galeria__item:hover .presentacion__galeria__foto{
-    scale: 0;
+.presentacion__galeria__foto{
+    display: block;
+    background-color: #fff;
 }
 
-/* ? Descripción: cubre toda la tarjeta pero arranca "abatida" hacia atrás (rotateX -90deg,
-   con bisagra abajo) así que no se ve; al hacer hover gira a 0deg y se para derecha,
-   como si fuera una tapa que se abre desde el fondo de la tarjeta. */
 .presentacion__galeria__caption{
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    text-align: left;
-    padding: 16px;
     box-sizing: border-box;
     background-color: rgba(18, 37, 83, 0.96); /* --color-terciario con transparencia */
     color: var(--color-primario);
     font-family: var(--fuente-Helvica);
-    font-size: 0.75rem;
     line-height: 1.4;
-    transform: rotateX(-90deg);
-    transform-origin: bottom;
-    transition: transform .5s cubic-bezier(.175, .885, .32, 1.275);
-    pointer-events: none; /* & que no le robe el hover a la foto, el trigger sigue siendo .presentacion__galeria__item */
+    text-align: left;
 }
 
-.presentacion__galeria__item:hover .presentacion__galeria__caption{
-    transform: rotateX(0deg);
+/* ? Letrero "Pasa el cursor para ver la historia" sobre cada foto (solo escritorio) */
+.presentacion__galeria__pista{
+    display: none;
+}
+
+/* =====================================================================
+   ? ESCRITORIO / LAPTOP con mouse (más de 1200px de ancho Y que el
+   dispositivo tenga hover de verdad): collage a los lados del nombre,
+   con la historia apareciendo con el efecto flip.
+   ===================================================================== */
+@media (width > 1200px) and (hover: hover){
+
+    /* ? La foto es la "tarjeta" que hace el efecto flip. Idea tomada de un diseño de
+       Uiverse.io (por samuelfcosta18): la foto se encoge y la historia entra girando
+       como una tapa desde abajo (rotateX). "perspective" hace que el giro se vea 3D;
+       "overflow:hidden" (de la base) recorta la tapa al tamaño de la tarjeta. */
+    .presentacion__galeria__item{
+        display: inline-block;
+        perspective: 1000px;
+        cursor: pointer;
+        transition: transform .3s cubic-bezier(.175, .885, .32, 1.275); /* & curva "con rebote", igual que la referencia */
+    }
+
+    /* & la inclinación "polaroid" vive en la tarjeta completa (no en la foto), así foto e
+       historia se inclinan juntas. "rotate" suelto (no transform) para que no choque con el
+       transform:scale del hover */
+    .presentacion__galeria__item--1{ rotate: -6deg; } /* construcción del robot, arriba-izquierda */
+    .presentacion__galeria__item--2{ rotate: 6deg; } /* entrevista, abajo-izquierda */
+    .presentacion__galeria__item--3{ rotate: 2deg; } /* panel ONU Mujeres, arriba-derecha */
+    .presentacion__galeria__item--4{ rotate: 6deg; } /* Latinas en Tech, abajo-derecha */
+
+    /* & desfase en X para que la foto de abajo NO quede alineada justo debajo de la de arriba */
+    .presentacion__galeria__item--2{ margin-left: 250px; }
+    .presentacion__galeria__item--4{ margin-right: -250px; }
+
+    /* & la historia aparece con el mouse (:hover) o al llegar con Tab / hacer click (:focus) */
+    .presentacion__galeria__item:hover,
+    .presentacion__galeria__item:focus{
+        z-index: 10; /* & que la tarjeta agrandada + su historia queden por encima de las demás */
+        transform: scale(1.08);
+    }
+
+    /* ? Estilo "polaroid" de cada foto: marco blanco grueso */
+    .presentacion__galeria__foto{
+        width: 240px;
+        border: 8px solid #fff;
+        border-radius: 4px;
+        scale: 1;
+        transition: scale .5s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    /* & al abrir la historia, la foto se encoge hasta desaparecer (igual que el ícono del ejemplo) */
+    .presentacion__galeria__item:hover .presentacion__galeria__foto,
+    .presentacion__galeria__item:focus .presentacion__galeria__foto{
+        scale: 0;
+    }
+
+    /* ? Historia: cubre toda la tarjeta pero arranca "abatida" hacia atrás (rotateX -90deg,
+       bisagra abajo); al abrirse gira a 0deg, como una tapa que se levanta */
+    .presentacion__galeria__caption{
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        font-size: 0.75rem;
+        transform: rotateX(-90deg);
+        transform-origin: bottom;
+        transition: transform .5s cubic-bezier(.175, .885, .32, 1.275);
+        pointer-events: none; /* & que no le robe el hover a la tarjeta */
+    }
+
+    .presentacion__galeria__item:hover .presentacion__galeria__caption,
+    .presentacion__galeria__item:focus .presentacion__galeria__caption{
+        transform: rotateX(0deg);
+    }
+
+    /* ? Letrero sobre la foto para que la gente sepa que hay una historia escondida;
+       se desvanece cuando la historia se abre */
+    .presentacion__galeria__pista{
+        display: block;
+        position: absolute;
+        left: 50%;
+        bottom: 16px;
+        translate: -50% 0; /* & "translate" suelto, para no pisar ningún transform */
+        width: max-content;
+        max-width: calc(100% - 32px);
+        padding: 6px 12px;
+        border-radius: 999px;
+        background-color: rgba(18, 37, 83, 0.88); /* --color-terciario: contraste alto sobre cualquier foto */
+        color: var(--color-secundario);
+        font-family: var(--fuente-Helvica);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-align: center;
+        pointer-events: none;
+        transition: opacity .2s ease;
+    }
+
+    .presentacion__galeria__item:hover .presentacion__galeria__pista,
+    .presentacion__galeria__item:focus .presentacion__galeria__pista{
+        opacity: 0;
+    }
+}
+
+/* =====================================================================
+   ? CELULAR / TABLET (1200px o menos, o cualquier pantalla táctil sin
+   hover): las fotos dejan de ser collage y se vuelven un carrusel
+   deslizable debajo del nombre, con la historia SIEMPRE visible debajo
+   de cada foto (en touch el hover no existe, así que no puede esconderse).
+   ===================================================================== */
+@media (width <= 1200px), (hover: none){
+    .presentacion{
+        flex-direction: column;
+        flex-wrap: nowrap;
+        padding: 2rem 5%;
+        gap: 20px;
+    }
+
+    .presentacion__contenido{
+        order: 0; /* & regresa al orden del HTML: nombre, letrero, carrusel */
+        width: auto;
+    }
+
+    .presentacion__fotos__pista{
+        display: block;
+        align-self: flex-start;
+        font-family: var(--fuente-Helvica);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--color-terciario);
+    }
+
+    /* ? El carrusel: fila con scroll horizontal propio. scroll-snap hace que al soltar el
+       dedo la foto más cercana se "acomode" sola en el centro */
+    .presentacion__fotos{
+        display: flex;
+        gap: 16px;
+        width: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 4px 4px 16px;
+        box-sizing: border-box;
+        scrollbar-color: var(--color-terciario) rgba(18, 37, 83, 0.08);
+    }
+
+    /* & los 2 grupos izquierda/derecha desaparecen como caja: las 4 fotos quedan como
+       hijas directas del carrusel, una tras otra */
+    .presentacion__galeria{
+        display: contents;
+    }
+
+    /* ? Cada foto es una tarjeta del carrusel: foto arriba, historia abajo */
+    .presentacion__galeria__item{
+        flex: 0 0 min(80vw, 320px);
+        scroll-snap-align: center;
+        display: flex;
+        flex-direction: column;
+        border-radius: 12px;
+    }
+
+    .presentacion__galeria__foto{
+        width: 100%;
+        height: 280px;
+        object-fit: cover; /* & recorta la foto para llenar el espacio sin deformarla */
+    }
+
+    .presentacion__galeria__caption{
+        flex: 1; /* & que todas las tarjetas queden del mismo alto aunque la historia sea más corta */
+        padding: 16px 18px;
+        font-size: 0.9rem;
+    }
 }
 
 /* ? Bloque de "accede a mis redes" con el subtítulo y los links a Instagram/Github (actualmente sin usar en el hero) */
@@ -365,15 +505,44 @@ footer p{
     height: 20px;
 }
 
-/* ? Media query: ajustes de layout para pantallas más chicas (tablets/celulares, <=1200px) */
-@media (max-width: 1200px){
-    .presentacion{
-        padding: 3rem 5%;
+/* ? Menú en celular (hasta 768px): no caben los 5 links en una fila, así que la píldora
+   de links se desliza de lado (el link activo se centra solo, ver scrollspy.js) y la de
+   idioma queda fija a su derecha. Links y botones de al menos 44px de alto: el tamaño
+   mínimo recomendado para tocar con el dedo sin atinarle al de al lado. */
+@media (width <= 768px){
+    .header{
+        padding: 0.75rem 3%;
     }
-    .presentacion__galeria{
-        display: none; /* & en pantallas chicas se ocultan las fotos decorativas para que el nombre/texto no queden apretados */
+    .header__menu{
+        flex-wrap: nowrap;
+        gap: 8px;
+        width: 100%;
     }
-    .presentacion__contenido{
-        width: auto; /* ya no se divide 50/50 con la imagen, ocupa el ancho que necesite */
+    .header__menu__links{
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        min-width: 0; /* & sin esto, un hijo de flex no se deja encoger y el scroll no funciona */
+        overflow-x: auto;
+        scrollbar-width: none; /* & barra de scroll invisible: se ve más limpio, igual se desliza con el dedo */
+    }
+    .header__menu__links::-webkit-scrollbar{
+        display: none;
+    }
+    .header__menu__link{
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 14px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    .header__menu__langs{
+        flex-shrink: 0;
+    }
+    .header__menu__lang{
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0 8px;
     }
 }

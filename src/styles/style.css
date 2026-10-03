@@ -35,6 +35,28 @@ body{
     padding-top: var(--header-height); /* & el header ahora es "fixed" (ver components.css); esto le abre el espacio que él dejó, para que no tape el hero */
 }
 
+/* ? Texto que solo existe para el lector de pantalla: invisible, pero sigue en la página
+   (no se usa display:none porque eso también lo esconde del lector). Ej: el aviso de
+   "(se abre en otra pestaña)" en los links del footer. */
+.sr-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ? Contorno visible cuando llegas a un elemento con el teclado (Tab). ":focus-visible"
+   y no ":focus": con el mouse no aparece, solo cuando de verdad se navega con teclado */
+:focus-visible{
+    outline: 3px solid var(--color-terciario);
+    outline-offset: 3px;
+}
+
 /* ? Estructura genérica de las secciones de CV (Sobre mi / Profesional / Liderazgo / Proyectos):
    mismo layout de título + texto centrados, compartido por src/cv/*.js.
    Vive acá (no en un css por sección) justo porque es lo único que SÍ es común a las 4;
@@ -51,13 +73,13 @@ body{
 
 .seccion__titulo{
     font-family: var(--fuente-TimesNR);
-    font-size: 3.8rem;
+    font-size: clamp(2.2rem, 7vw, 3.8rem); /* & se encoge solo en pantallas angostas (mín 2.2rem, máx 3.8rem) */
     color: var(--color-terciario);
 }
 
 .seccion__texto{
     font-family: var(--fuente-Helvica);
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 3.2vw, 1.5rem);
     max-width: 700px; /* & que el párrafo no se estire de pared a pared en pantallas anchas */
     color: var(--color-text);
 }
@@ -127,4 +149,22 @@ body{
     font-family: var(--fuente-Helvica);
     font-size: 1.05rem;
     color: var(--color-text);
+}
+
+/* ? Celular (pantallas de hasta 768px): menos aire a los lados para que el contenido
+   aproveche el ancho, y tarjetas más compactas con las fechas abajo del puesto */
+@media (width <= 768px){
+    .seccion{
+        padding: 3rem 5%;
+    }
+    .cv-item{
+        padding: 18px;
+    }
+    .cv-item__fechas{
+        align-items: flex-start; /* & en celular las fechas bajan debajo del puesto: alineadas a la izquierda como el resto */
+        text-align: left;
+    }
+    .cv-item__bullets{
+        font-size: 1rem;
+    }
 }

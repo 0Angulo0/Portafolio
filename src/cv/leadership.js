@@ -24,8 +24,8 @@ const ROLES = [
 
 export function renderLeadership() {
     return `
-        <section class="seccion seccion--leadership" id="liderazgo">
-            <h2 class="seccion__titulo" data-i18n="leadership_titulo"></h2>
+        <section class="seccion seccion--leadership" id="liderazgo" aria-labelledby="leadership-titulo">
+            <h2 class="seccion__titulo" id="leadership-titulo" data-i18n="leadership_titulo"></h2>
             <div class="cv-lista">
                 ${ROLES.map((rol) => renderCvItem(rol.prefijo, rol.bullets)).join("")}
             </div>

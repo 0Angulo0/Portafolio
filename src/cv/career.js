@@ -20,10 +20,11 @@ const EXPERIENCIAS = [
 
 //& envuelve la tarjeta (renderCvItem) con el punto y el segmento de línea que
 //& la conectan al resto de la línea de tiempo (ver .timeline__nodo en career.css)
+//& el punto y la línea son puro dibujo (aria-hidden): el lector de pantalla no tiene nada que leer ahí
 function renderTimelineItem(exp) {
     return `
-        <div class="timeline__item">
-            <div class="timeline__nodo">
+        <div class="timeline__item" role="listitem">
+            <div class="timeline__nodo" aria-hidden="true">
                 <span class="timeline__linea"></span>
                 <span class="timeline__punto"></span>
             </div>
@@ -32,12 +33,14 @@ function renderTimelineItem(exp) {
     `;
 }
 
+//& .timeline-wrapper tiene scroll horizontal propio: role="region" + aria-label le dan nombre
+//& y tabindex="0" deja moverlo con las flechas del teclado (sin esto, solo con mouse/touch)
 export function renderCareer() {
     return `
-        <section class="seccion seccion--career" id="profesional">
-            <h2 class="seccion__titulo" data-i18n="career_titulo"></h2>
-            <div class="timeline-wrapper">
-                <div class="timeline">
+        <section class="seccion seccion--career" id="profesional" aria-labelledby="career-titulo">
+            <h2 class="seccion__titulo" id="career-titulo" data-i18n="career_titulo"></h2>
+            <div class="timeline-wrapper" role="region" tabindex="0" data-i18n-aria="career_timeline_aria">
+                <div class="timeline" role="list">
                     ${EXPERIENCIAS.map(renderTimelineItem).join("")}
                 </div>
             </div>

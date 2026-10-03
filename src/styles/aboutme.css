@@ -1,124 +1,105 @@
-/*? Estilos propios de la sección "Sobre mi" (src/cv/aboutme.js): layout de
-    2 columnas (tabla de skills a la izquierda, texto a la derecha) + la
-    tarjeta de la tabla + el cuadro verde de la nota destacada.
+/*? Estilos propios de la sección "Sobre mi" (src/cv/aboutme.js): dos tablas de
+    skills (duras y blandas) a la izquierda + el texto a la derecha + el cuadro
+    verde de la nota destacada.
     El layout base de .seccion (columna, centrado) se sobreescribe acá porque
-    esta sección en particular necesita 2 columnas alineadas a la izquierda. */
+    esta sección en particular necesita 2 columnas. */
 
-/* & pasa .seccion de columna centrada a una fila de 2 columnas alineadas arriba/izquierda */
+/* & pasa .seccion de columna centrada a una fila de 2 columnas, con el conjunto
+   completo (tablas + texto) centrado en la sección */
 .seccion--aboutme{
     background-color: rgba(255, 255, 255, 0.35);
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
     text-align: left; /* & los <h2>/<p> de adentro heredan esto en vez del centrado del .seccion base */
-    flex-wrap: wrap; /* & si no caben las 2 columnas lado a lado (pantalla angosta), la tabla pasa arriba y el texto abajo */
-    gap: 80px;
+    flex-wrap: wrap; /* & si no caben las 2 columnas lado a lado (pantalla angosta), pasan una abajo de la otra */
+    gap: 72px; /* & separación amplia entre las tablas y el texto */
 }
 
-/* ? Columna izquierda completa: tabla de skills duras + tarjeta de skills blandas, apiladas */
-.aboutme__columna-izquierda{
-    flex: 1 1 380px; /* & que pueda achicarse/crecer, pero preferentemente arranque en 380px */
-    max-width: 530px;
+/* ? Columna de las tablas: duras arriba, blandas abajo. order:-1 la pone a la izquierda
+   aunque en el HTML vaya DESPUÉS del texto (el texto va primero para que el lector de
+   pantalla lea el título de la sección antes que las tablas). "flex: 0 1 520px": arranca
+   en 520px pero se puede encoger en pantallas angostas */
+.aboutme__skills{
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 32px;
+    flex: 0 1 520px;
+    min-width: 0; /* & sin esto, un hijo de flex no se deja encoger por debajo de su contenido */
+    max-width: 100%;
+    order: -1;
 }
 
-/* ? Tarjeta de la tabla de skills duras */
+/* ? Cada tabla: tarjeta blanca con las filas separadas por líneas finas */
 .aboutme__tabla{
+    width: 100%;
+    /* & "separate" con espacio 0 y no "collapse": con collapse el border-radius de la tabla no funciona */
+    border-collapse: separate;
+    border-spacing: 0;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    overflow: hidden; /* & que el borde redondeado de la tarjeta corte las filas de la lista, no que se salgan */
+    font-family: var(--fuente-Helvica);
 }
 
-/* ? Fila de arriba de la tabla: "Capability Matrix" + "Hover para detalles" */
-.aboutme__tabla__cabecera{
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 20px;
-    font-family: var(--fuente-Helvica);
+/* ? Título de la tabla (<caption>): va arriba, afuera de la tarjeta */
+.aboutme__tabla__titulo{
+    caption-side: top;
+    text-align: left;
+    padding-bottom: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-terciario);
+}
+
+/* ? Cabecera ("#" / "Habilidad") */
+.aboutme__tabla th{
+    padding: 12px 20px;
+    text-align: left;
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    text-transform: uppercase; /* mayúsculas, como en la referencia */
+    text-transform: uppercase;
     color: var(--color-terciario);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08); /* línea fina que separa la cabecera de las filas */
+    border-bottom: 2px solid rgba(18, 37, 83, 0.15);
 }
 
-.aboutme__tabla__lista{
-    list-style: none; /* saca los puntos de lista por defecto del <ul> */
-}
-
-/* ? Cada fila de skill: número + nombre + "Dominio" */
-.aboutme__tabla__fila{
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 18px;
+.aboutme__tabla td{
+    padding: 14px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06); /* separa una fila de la siguiente */
 }
 
-.aboutme__tabla__fila:last-child{
+.aboutme__tabla__fila:last-child td{
     border-bottom: none; /* & la última fila no necesita línea, ya la cierra la tarjeta */
 }
 
+/* ? Columna del número: angosta y discreta, no debe competir con el nombre de la skill */
 .aboutme__tabla__num{
-    font-family: var(--fuente-Helvica);
+    width: 3rem;
     font-size: 0.75rem;
     color: var(--color-hover);
-    opacity: 0.6; /* número discreto, no debe competir con el nombre de la skill */
 }
 
 .aboutme__tabla__skill{
-    flex: 1; /* & empuja "Dominio" hasta la derecha de la fila */
     font-family: var(--fuente-TimesNR);
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-style: italic;
     color: var(--color-terciario);
 }
 
-.aboutme__tabla__dominio{
-    font-family: var(--fuente-Helvica);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-hover);
-    opacity: 0.5;
-}
-
-/* ? Tarjeta de skills blandas, mismo estilo de tarjeta que .aboutme__tabla, debajo de ella */
-.aboutme__softskills{
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    padding: 20px 22px;
-}
-
-.aboutme__softskills__titulo{
-    font-family: var(--fuente-Helvica);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase; /* mismo tratamiento que la cabecera de la tabla de skills duras */
+/* & la tabla de blandas lleva el número en verde para distinguirla de un vistazo de la de duras */
+.aboutme__tabla--blandas .aboutme__tabla__num{
     color: var(--color-terciario);
-    margin-bottom: 14px;
+    font-weight: 700;
 }
-
-.aboutme__softskills__lista{
-    display: flex;
-    flex-wrap: wrap; /* & con 12 skills, van armando varias líneas solas según el ancho disponible */
-    gap: 8px;
+.aboutme__tabla--blandas tbody .aboutme__tabla__num{
+    background-color: var(--color-secundario);
 }
-
-.aboutme__softskills__pill{
-    font-family: var(--fuente-Helvica);
-    font-size: 0.85rem;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background-color: rgba(18, 37, 83, 0.08); /* & un tinte muy suave de --color-terciario, no un color nuevo */
-    color: var(--color-terciario);
+/* & la celda verde de la última fila sigue la esquina redondeada de la tarjeta */
+.aboutme__tabla--blandas tbody tr:last-child .aboutme__tabla__num{
+    border-bottom-left-radius: 12px;
 }
 
 /* ? Columna derecha: título + texto + nota. flex-direction:column porque .seccion--aboutme de arriba es "row" */
@@ -127,11 +108,12 @@
     max-width: 600px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* & sobreescribe el align-items:center de .seccion, todo pegado a la izquierda */
+    align-items: flex-end; /* & pega el h2/p/nota al borde derecho de la columna (no solo el texto adentro de cada uno) */
+    text-align: right; /* & alinea las líneas de texto a la derecha dentro de cada elemento */
     gap: 40px;
 }
 
-/* ? Cuadro verde con la pregunta + about_texto_2 ("¿Pero qué más...") */
+/* ? Cuadro verde con la pregunta + about_texto_2 ("¿Y como líder?") */
 .aboutme__nota{
     background-color: var(--color-secundario); /* verde, como pediste */
     border-radius: 12px;
@@ -145,7 +127,7 @@
     font-family: var(--fuente-TimesNR);
     font-size: 1.4rem;
     font-style: italic;
-    color: var(--color-terciario); /* & esto es lo que faltaba: era font-family en vez de color, y por eso "no se veía" */
+    color: var(--color-terciario);
 }
 
 .aboutme__nota__texto{
@@ -153,4 +135,37 @@
     font-size: 1.2rem;
     color: var(--color-terciario); /* verde oscuro, buen contraste sobre el verde claro del cuadro */
     white-space: pre-line; /* & respeta el \n de about_texto_2 (ver transaltion.js) como salto de línea real */
+}
+
+/* ? Tablet (hasta 1024px): texto y tablas ya no caben lado a lado, así que van apilados
+   (texto arriba, tablas abajo, el orden del HTML) y el texto pasa a alinearse a la
+   izquierda: alineado a la derecha solo tenía sentido cuando estaba en su propia columna */
+@media (width <= 1024px){
+    .seccion--aboutme{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 48px;
+    }
+    .aboutme__skills{
+        order: 0;
+        flex: none;
+        width: 100%;
+    }
+    .aboutme__contenido{
+        flex: none;
+        max-width: 100%;
+        align-items: flex-start;
+        text-align: left;
+    }
+}
+
+/* ? Celular (hasta 600px): celdas más compactas y letra un poco menor */
+@media (width <= 600px){
+    .aboutme__tabla th,
+    .aboutme__tabla td{
+        padding: 12px 14px;
+    }
+    .aboutme__tabla__skill{
+        font-size: 1.05rem;
+    }
 }

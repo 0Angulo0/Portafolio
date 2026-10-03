@@ -23,10 +23,13 @@ export function renderFooter() {
                 <a class="footer__contacto__link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">
                     <img class="footer__contacto__icono" src="assets/github.png" alt="">
                     <span>Github</span>
+                    <!-- //& texto solo para lector de pantalla (.sr-only): avisa que el link abre otra pestaña -->
+                    <span class="sr-only" data-i18n="footer_nueva_pestana"></span>
                 </a>
                 <a class="footer__contacto__link" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">
                     <img class="footer__contacto__icono" src="assets/linkedin.png" alt="">
                     <span>LinkedIn</span>
+                    <span class="sr-only" data-i18n="footer_nueva_pestana"></span>
                 </a>
             </div>
             <p data-i18n="footer_texto">Desarrollado por Daniela Angulo</p>

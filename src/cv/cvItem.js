@@ -11,11 +11,13 @@ export function renderCvItem(prefijo, numBullets) {
         <li data-i18n="${prefijo}_bullet_${i + 1}"></li>
     `).join("");
 
+    //& aria-labelledby: el lector de pantalla anuncia cada tarjeta con el nombre del puesto
+    //& (su <h3>); el id sale del prefijo, que ya es único por tarjeta
     return `
-        <article class="cv-item">
+        <article class="cv-item" aria-labelledby="${prefijo}-titulo">
             <div class="cv-item__cabecera">
                 <div class="cv-item__rol-org">
-                    <h3 class="cv-item__rol" data-i18n="${prefijo}_rol"></h3>
+                    <h3 class="cv-item__rol" id="${prefijo}-titulo" data-i18n="${prefijo}_rol"></h3>
                     <p class="cv-item__org" data-i18n="${prefijo}_org"></p>
                 </div>
                 <div class="cv-item__fechas">

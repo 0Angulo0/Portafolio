@@ -18,8 +18,26 @@ export function initScrollSpy() {
         .filter(Boolean); // & por si algún href del menú todavía no tiene su sección (ej. futuras páginas)
 
     function marcarActivo(id) {
-        links.forEach((link) => link.classList.remove("is-active"));
-        linkPorId.get(id)?.classList.add("is-active");
+        links.forEach((link) => {
+            link.classList.remove("is-active");
+            link.removeAttribute("aria-current");
+        });
+        const activo = linkPorId.get(id);
+        if (!activo) return;
+        activo.classList.add("is-active");
+        //& aria-current="location": el lector de pantalla anuncia "ubicación actual" en este
+        //& link; la clase "is-active" sola es solo visual y no le dice nada
+        activo.setAttribute("aria-current", "location");
+
+        //& en celular la píldora del menú tiene scroll horizontal (no caben los 5 links):
+        //& se recorre sola para que el link activo quede centrado y a la vista
+        const pildora = activo.parentElement;
+        if (pildora.scrollWidth > pildora.clientWidth) {
+            pildora.scrollTo({
+                left: activo.offsetLeft - pildora.clientWidth / 2 + activo.offsetWidth / 2,
+                behavior: "smooth",
+            });
+        }
     }
 
     //& franja angosta pegada justo debajo del header fijo: cuando el TOP de una sección
